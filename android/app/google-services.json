@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "502436477795",
+    "project_id": "cheapest-item",
+    "storage_bucket": "cheapest-item.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:502436477795:android:bb5ab84ac32063943f3156",
+        "android_client_info": {
+          "package_name": "com.zwsimone.cheapest_item_calculator"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "502436477795-39rci0dm4o1usoeumgmlouirr3d4rt73.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDmxtkGazTvB8_BTUTHs9pQd_Wj6dInVL4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "502436477795-39rci0dm4o1usoeumgmlouirr3d4rt73.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
