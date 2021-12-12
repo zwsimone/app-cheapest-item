@@ -1,3 +1,4 @@
+import 'package:cheapest_item_calculator/models/item.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class DatabaseService {
@@ -10,27 +11,39 @@ class DatabaseService {
 
   Future addItemData(String category, String name, double units, String uom, double price) async {
     return await itemsCollection.add({
-      'Category': category,
-      'Name': name,
-      'Units': units,
-      'UoM': uom,
-      'Price': price,
+      'category': category,
+      'name': name,
+      'units': units,
+      'uom': uom,
+      'price': price,
     });
   }
 
   Future updateItemData(String category, String name, double units, String uom, double price) async {
     return await itemsCollection.doc(id).set({
-      'Category': category,
-      'Name': name,
-      'Units': units,
-      'UoM': uom,
-      'Price': price,
+      'category': category,
+      'name': name,
+      'units': units,
+      'uom': uom,
+      'price': price,
     });
   }
 
   // get items stream
-  Stream<QuerySnapshot> get items {
-    return itemsCollection.snapshots();
+  Stream<List<Item>>? get items {
+    return itemsCollection.snapshots().map(_itemListfromSnapshot);
   }
 
+  // item list from snapshot
+  List<Item> _itemListfromSnapshot(QuerySnapshot snapshot) {
+    return snapshot.docs.map((doc) {
+      return Item(
+        category: doc.get('category') ?? '',
+        name: doc.get('name') ?? '',
+        units: doc.get('units') ?? 0,
+        uom: doc.get('uom') ?? '',
+        price: doc.get('price') ?? 0,
+      );
+    }).toList();
+  }
 }
