@@ -22,6 +22,7 @@ class _ItemDisplayState extends State<ItemDisplay> {
       print(item.units);
       print(item.uom);
       print(item.price);
+      print(item.priceperuom);
     });
 
     return Container(

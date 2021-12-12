@@ -9,23 +9,25 @@ class DatabaseService {
   // collection reference
   final CollectionReference itemsCollection = FirebaseFirestore.instance.collection("items");
 
-  Future addItemData(String category, String name, double units, String uom, double price) async {
+  Future addItemData(String category, String name, double units, String uom, double price, double priceperuom) async {
     return await itemsCollection.add({
       'category': category,
       'name': name,
       'units': units,
       'uom': uom,
       'price': price,
+      'priceperuom': priceperuom,
     });
   }
 
-  Future updateItemData(String category, String name, double units, String uom, double price) async {
+  Future updateItemData(String category, String name, double units, String uom, double price, double priceperuom) async {
     return await itemsCollection.doc(id).set({
       'category': category,
       'name': name,
       'units': units,
       'uom': uom,
       'price': price,
+      'priceperuom': priceperuom,
     });
   }
 
@@ -43,6 +45,7 @@ class DatabaseService {
         units: doc.get('units') ?? 0,
         uom: doc.get('uom') ?? '',
         price: doc.get('price') ?? 0,
+        priceperuom: doc.get('priceperuom') ?? 0,
       );
     }).toList();
   }

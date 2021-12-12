@@ -151,12 +151,16 @@ class _ItemEntryState extends State<ItemEntry> {
             children: <Widget>[
               TextButton(
                 onPressed: () {
+                  double unitsValue = double.parse(units.text);
+                  double priceValue = double.parse(price.text);
+                  double pricePerUom = priceValue/unitsValue;
                   DatabaseService().addItemData(
                       categoryValue,
                       name.text,
-                      double.parse(units.text),
+                      unitsValue,
                       uomValue,
-                      double.parse(price.text));
+                      priceValue,
+                      pricePerUom);
                   Navigator.pop(context);
                 },
                 child: const Text('Add'),

@@ -1,5 +1,5 @@
 import 'package:cheapest_item_calculator/models/item.dart';
-import 'package:cheapest_item_calculator/screens/item_display.dart';
+import 'package:cheapest_item_calculator/screens/home/item_display.dart';
 import 'package:cheapest_item_calculator/screens/item_entry.dart';
 import 'package:cheapest_item_calculator/services/database.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';

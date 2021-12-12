@@ -1,4 +1,4 @@
-import 'package:cheapest_item_calculator/screens/dashboard.dart';
+import 'package:cheapest_item_calculator/screens/home/dashboard.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
