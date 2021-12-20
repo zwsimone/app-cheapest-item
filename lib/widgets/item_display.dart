@@ -2,7 +2,7 @@ import 'package:cheapest_item_calculator/models/item.dart';
 import 'package:cheapest_item_calculator/services/database.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:cheapest_item_calculator/screens/home/item_tile.dart';
+import 'package:cheapest_item_calculator/widgets/item_tile.dart';
 
 class ItemDisplay extends StatefulWidget {
   const ItemDisplay({Key? key}) : super(key: key);

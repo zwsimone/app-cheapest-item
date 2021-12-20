@@ -1,5 +1,5 @@
 import 'package:cheapest_item_calculator/models/item.dart';
-import 'package:cheapest_item_calculator/screens/home/item_display.dart';
+import 'package:cheapest_item_calculator/widgets/item_display.dart';
 import 'package:cheapest_item_calculator/services/database.dart';
 import 'package:flutter/material.dart';
 

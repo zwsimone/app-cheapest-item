@@ -1,11 +1,9 @@
 import 'package:camera/camera.dart';
 import 'package:cheapest_item_calculator/models/item.dart';
-import 'package:cheapest_item_calculator/screens/home/item_scanner.dart';
+import 'package:cheapest_item_calculator/screens/item_scanner.dart';
 import 'package:cheapest_item_calculator/services/database.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:google_ml_kit/google_ml_kit.dart';
-import 'package:qr_mobile_vision/qr_camera.dart';
 
 class ItemEntry extends StatefulWidget {
   const ItemEntry({Key? key}): super(key: key);
@@ -101,6 +99,10 @@ class _ItemEntryState extends State<ItemEntry> {
                     Container(
                       padding: EdgeInsets.all(tableCellPadding),
                       child: TextField(
+                        onChanged: (id) async {
+                          Item item = await getItemFromBarcode(id);
+                          setFields(item);
+                        },
                         decoration: InputDecoration(
                           suffixIcon: IconButton(
                             icon: Icon(Icons.camera_alt),
@@ -112,15 +114,7 @@ class _ItemEntryState extends State<ItemEntry> {
                               );
                               barcodeController.text = item.barcode.toString();
                               print('Item returned: ${item.barcode},${item.category},${item.name},${item.units},${item.uom},${item.priceperuom}');
-                              if (item.price != 0) {
-                                name.text = item.name;
-                                units.text = item.units.toString();
-                                price.text = item.price.toString();
-                                setState(() {
-                                  categoryValue = item.category;
-                                  uomUpdate();
-                                });
-                              }
+                              setFields(item);
                             }
                           ),
                         ),
@@ -240,6 +234,32 @@ class _ItemEntryState extends State<ItemEntry> {
         uomValue = 'kg';
         break;
       default:
+    }
+  }
+
+  Future<Item> getItemFromBarcode (String barcode) async {
+    bool itemPresent = await DatabaseService().checkDocument(barcode);
+    Item returnItem;
+    if (itemPresent) {
+      print('Item is present in the database');
+      returnItem = await DatabaseService().getDocument(barcode);
+    } else {
+      print('Item is NOT present in the database');
+      returnItem = Item(barcode: int.parse(barcode), category: "", name: "", units: 0, uom: "", price: 0, priceperuom: 0);
+    }
+
+    return returnItem;
+  }
+
+  void setFields(Item item) {
+    if (item.price != 0) {
+      name.text = item.name;
+      units.text = item.units.toString();
+      price.text = item.price.toString();
+      setState(() {
+        categoryValue = item.category;
+        uomUpdate();
+      });
     }
   }
 }

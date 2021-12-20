@@ -1,6 +1,5 @@
 import 'package:cheapest_item_calculator/models/item.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/cupertino.dart';
 
 class DatabaseService {
   final String? id;

@@ -1,6 +1,6 @@
 import 'package:cheapest_item_calculator/models/item.dart';
-import 'package:cheapest_item_calculator/screens/home/item_display.dart';
-import 'package:cheapest_item_calculator/screens/home/item_result.dart';
+import 'package:cheapest_item_calculator/widgets/item_display.dart';
+import 'package:cheapest_item_calculator/widgets/item_result.dart';
 import 'package:cheapest_item_calculator/screens/item_entry.dart';
 import 'package:cheapest_item_calculator/services/database.dart';
 import 'package:flutter/cupertino.dart';
