@@ -51,6 +51,13 @@ class Dashboard extends StatelessWidget {
                   heroTag: null,
                 ),
               ),
+              Align(
+                alignment: Alignment.bottomRight,
+                child: FloatingActionButton(
+                  child: const Icon(Icons.clear_all),
+                  onPressed: () => DatabaseService().clearCollection('dashboard'),
+                ),
+              ),
             ],
           ),
         ),

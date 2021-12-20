@@ -15,6 +15,7 @@ class ItemResult extends StatelessWidget {
       padding: EdgeInsets.all(8.0),
       child: Card(
         margin: EdgeInsets.fromLTRB(20.0, 6.0, 20.0, 0.0),
+        color: Colors.green,
         child: ListTile(
           title: Text('Cheapest Item:'),
           subtitle: Text('${cheapestItem.name}\nR ${cheapestItem.priceperuom} / ${cheapestItem.uom}'),
