@@ -1,7 +1,9 @@
 import 'dart:io';
 
 import 'package:camera/camera.dart';
+import 'package:cheapest_item_calculator/models/item.dart';
 import 'package:cheapest_item_calculator/screens/item_entry.dart';
+import 'package:cheapest_item_calculator/services/database.dart';
 import 'package:flutter/material.dart';
 import 'package:google_ml_kit/google_ml_kit.dart';
 
@@ -84,9 +86,18 @@ class _ItemScannerState extends State<ItemScanner> {
                     icon: Icon(Icons.camera_alt),
                     onPressed: () async {
                       String barcode = await decodeBarcode();
+                      bool itemPresent = await DatabaseService().checkDocument(barcode);
+                      Item returnItem;
+                      if (itemPresent) {
+                        print('Item is present in the database');
+                        returnItem = await DatabaseService().getDocument(barcode);
+                      } else {
+                        print('Item is NOT present in the database');
+                        returnItem = Item(barcode: int.parse(barcode), category: "", name: "", units: 0, uom: "", price: 0, priceperuom: 0);
+                      }
                       Navigator.pop(
                         context,
-                        barcode,
+                        returnItem,
                       );
                     },
                   ),

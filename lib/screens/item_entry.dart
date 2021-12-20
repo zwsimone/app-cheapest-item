@@ -1,4 +1,5 @@
 import 'package:camera/camera.dart';
+import 'package:cheapest_item_calculator/models/item.dart';
 import 'package:cheapest_item_calculator/screens/home/item_scanner.dart';
 import 'package:cheapest_item_calculator/services/database.dart';
 import 'package:flutter/foundation.dart';
@@ -77,25 +78,7 @@ class _ItemEntryState extends State<ItemEntry> {
                         onChanged: (String? newValue) {
                           setState(() {
                             categoryValue = newValue!;
-                            switch (categoryValue) {
-                              case 'Cheese':
-                                uomDisplay = 'grams (g)';
-                                uomValue = 'g';
-                                break;
-                              case 'Milk':
-                                uomDisplay = 'liters (l)';
-                                uomValue = 'l';
-                                break;
-                              case 'Eggs':
-                                uomDisplay = 'each (ea)';
-                                uomValue = 'ea';
-                                break;
-                              case 'Meat':
-                                uomDisplay = 'kilograms (kg)';
-                                uomValue = 'kg';
-                                break;
-                              default:
-                            }
+                            uomUpdate();
                           });
                         },
                         items: <String>['Cheese', 'Milk', 'Eggs', 'Meat']
@@ -122,11 +105,22 @@ class _ItemEntryState extends State<ItemEntry> {
                           suffixIcon: IconButton(
                             icon: Icon(Icons.camera_alt),
                             onPressed: () async {
-                              barcodeController.text = await Navigator.push(
+                              Item item = await Navigator.push(
                                   context,
                                   MaterialPageRoute(builder: (context) =>
                                       ItemScanner(cameras: cameras))
                               );
+                              barcodeController.text = item.barcode.toString();
+                              print('Item returned: ${item.barcode},${item.category},${item.name},${item.units},${item.uom},${item.priceperuom}');
+                              if (item.price != 0) {
+                                name.text = item.name;
+                                units.text = item.units.toString();
+                                price.text = item.price.toString();
+                                setState(() {
+                                  categoryValue = item.category;
+                                  uomUpdate();
+                                });
+                              }
                             }
                           ),
                         ),
@@ -225,5 +219,27 @@ class _ItemEntryState extends State<ItemEntry> {
         priceValue,
         pricePerUom);
     Navigator.pop(context);
+  }
+
+  void uomUpdate() {
+    switch (categoryValue) {
+      case 'Cheese':
+        uomDisplay = 'grams (g)';
+        uomValue = 'g';
+        break;
+      case 'Milk':
+        uomDisplay = 'liters (l)';
+        uomValue = 'l';
+        break;
+      case 'Eggs':
+        uomDisplay = 'each (ea)';
+        uomValue = 'ea';
+        break;
+      case 'Meat':
+        uomDisplay = 'kilograms (kg)';
+        uomValue = 'kg';
+        break;
+      default:
+    }
   }
 }

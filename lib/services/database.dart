@@ -3,16 +3,15 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 
 class DatabaseService {
-
   final String? id;
 
   DatabaseService([this.id]);
 
   // collection reference
-  final CollectionReference itemsCollection = FirebaseFirestore.instance
-      .collection("items");
-  final CollectionReference dashboardCollection = FirebaseFirestore.instance
-      .collection("dashboard");
+  final CollectionReference itemsCollection =
+      FirebaseFirestore.instance.collection("items");
+  final CollectionReference dashboardCollection =
+      FirebaseFirestore.instance.collection("dashboard");
 
   Future updateItemData(String category, String name, double units, String uom,
       double price, double priceperuom) async {
@@ -39,8 +38,10 @@ class DatabaseService {
   }
 
   Future clearCollection(String collection) async {
-    return FirebaseFirestore.instance.collection(collection).get().then((
-        snapshot) {
+    return FirebaseFirestore.instance
+        .collection(collection)
+        .get()
+        .then((snapshot) {
       for (DocumentSnapshot doc in snapshot.docs) {
         doc.reference.delete();
       }
@@ -49,6 +50,41 @@ class DatabaseService {
 
   Future deleteDocument(String id) async {
     return FirebaseFirestore.instance.collection("dashboard").doc(id).delete();
+  }
+
+  Future<bool> checkDocument(String id) async {
+    bool present = false;
+
+    List<Item> items = _itemListfromSnapshot(await itemsCollection.get());
+
+    for (Item item in items) {
+      if (item.barcode.toString() == id) {
+        return present = true;
+      }
+    }
+
+    return present;
+  }
+
+  Future<Item> getDocument(String id) async {
+    Item emptyItem = Item(
+        barcode: int.parse(id),
+        category: "",
+        name: "",
+        units: 0,
+        uom: "",
+        price: 0,
+        priceperuom: 0);
+
+    List<Item> items = _itemListfromSnapshot(await itemsCollection.get());
+
+    for (Item item in items) {
+      if (item.barcode.toString() == id) {
+        return item;
+      }
+    }
+
+    return emptyItem;
   }
 
   // get items stream
