@@ -1,10 +1,13 @@
+import 'package:camera/camera.dart';
+import 'package:cheapest_item_calculator/screens/home/item_scanner.dart';
 import 'package:cheapest_item_calculator/services/database.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:google_ml_kit/google_ml_kit.dart';
 import 'package:qr_mobile_vision/qr_camera.dart';
 
 class ItemEntry extends StatefulWidget {
-
-  const ItemEntry({Key? key}) : super(key: key);
+  const ItemEntry({Key? key}): super(key: key);
 
   @override
   _ItemEntryState createState() => _ItemEntryState();
@@ -17,6 +20,8 @@ class _ItemEntryState extends State<ItemEntry> {
   String uomValue = 'g';
   String barcodeValue = "";
 
+  late final List<CameraDescription> cameras;
+
   final name = TextEditingController();
   final units = TextEditingController();
   final price = TextEditingController();
@@ -28,8 +33,17 @@ class _ItemEntryState extends State<ItemEntry> {
     name.dispose();
     units.dispose();
     price.dispose();
-    //_controller.dispose();
     super.dispose();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    initCamera();
+  }
+
+  void initCamera() async {
+    cameras = await availableCameras();
   }
 
   @override
@@ -107,50 +121,13 @@ class _ItemEntryState extends State<ItemEntry> {
                         decoration: InputDecoration(
                           suffixIcon: IconButton(
                             icon: Icon(Icons.camera_alt),
-                            onPressed: () {
-                              showModalBottomSheet(
-                                  context: context,
-                                  builder: (context) {
-                                    return Wrap(
-                                      children: [
-                                        Padding(
-                                          padding: const EdgeInsets.all(8.0),
-                                          child: Center(
-                                            child: SizedBox(
-                                              width: (MediaQuery.of(context).size.width)*0.8,
-                                              height: ((MediaQuery.of(context).size.height)/2)*0.8,
-                                              child: QrCamera(
-                                                onError: (context, error) => Text(
-                                                  error.toString(),
-                                                  style: TextStyle(color: Colors.red),
-                                                ),
-                                                qrCodeCallback: (code) {
-                                                  setState(() {
-                                                    barcodeValue = code!;
-                                                    barcodeController.text = barcodeValue;
-                                                  });
-                                                },
-                                                child: Container(
-                                                  decoration: BoxDecoration(
-                                                    color: Colors.transparent,
-                                                    border: Border.all(
-                                                        color: Colors.orange,
-                                                        width: 10.0,
-                                                        style: BorderStyle.solid),
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                        Padding(
-                                          padding: const EdgeInsets.all(8.0),
-                                          child: Center(child: TextButton(onPressed: () => Navigator.pop(context), child: Text('Cancel'))),
-                                        ),
-                                      ],
-                                    );
-                                  });
-                            },
+                            onPressed: () async {
+                              barcodeController.text = await Navigator.push(
+                                  context,
+                                  MaterialPageRoute(builder: (context) =>
+                                      ItemScanner(cameras: cameras))
+                              );
+                            }
                           ),
                         ),
                         controller: barcodeController,
