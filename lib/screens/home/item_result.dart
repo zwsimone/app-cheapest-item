@@ -28,7 +28,7 @@ class ItemResult extends StatelessWidget {
     Item cheapestItem;
 
     if (items.isEmpty) {
-      cheapestItem = Item(category: "", name: "", units: 0, uom: "", price: 0, priceperuom: 0);
+      cheapestItem = Item(barcode: 0, category: "", name: "", units: 0, uom: "", price: 0, priceperuom: 0);
     } else {
       int index = 1;
       cheapestItem = items.first;

@@ -5,13 +5,17 @@ import 'package:flutter/cupertino.dart';
 class DatabaseService {
 
   final String? id;
+
   DatabaseService([this.id]);
 
   // collection reference
-  final CollectionReference itemsCollection = FirebaseFirestore.instance.collection("items");
-  final CollectionReference dashboardCollection = FirebaseFirestore.instance.collection("dashboard");
+  final CollectionReference itemsCollection = FirebaseFirestore.instance
+      .collection("items");
+  final CollectionReference dashboardCollection = FirebaseFirestore.instance
+      .collection("dashboard");
 
-  Future updateItemData(String category, String name, double units, String uom, double price, double priceperuom) async {
+  Future updateItemData(String category, String name, double units, String uom,
+      double price, double priceperuom) async {
     return await itemsCollection.doc(id).set({
       'category': category,
       'name': name,
@@ -22,7 +26,8 @@ class DatabaseService {
     });
   }
 
-  Future updateDashboardItemData(String category, String name, double units, String uom, double price, double priceperuom) async {
+  Future updateDashboardItemData(String category, String name, double units,
+      String uom, double price, double priceperuom) async {
     return await dashboardCollection.doc(id).set({
       'category': category,
       'name': name,
@@ -34,11 +39,16 @@ class DatabaseService {
   }
 
   Future clearCollection(String collection) async {
-    return FirebaseFirestore.instance.collection(collection).get().then((snapshot){
+    return FirebaseFirestore.instance.collection(collection).get().then((
+        snapshot) {
       for (DocumentSnapshot doc in snapshot.docs) {
         doc.reference.delete();
       }
     });
+  }
+
+  Future deleteDocument(String id) async {
+    return FirebaseFirestore.instance.collection("dashboard").doc(id).delete();
   }
 
   // get items stream
@@ -50,6 +60,7 @@ class DatabaseService {
   List<Item> _itemListfromSnapshot(QuerySnapshot snapshot) {
     return snapshot.docs.map((doc) {
       return Item(
+        barcode: int.parse(doc.id),
         category: doc.get('category') ?? '',
         name: doc.get('name') ?? '',
         units: doc.get('units') ?? 0,
@@ -69,6 +80,7 @@ class DatabaseService {
   List<Item> _dasboardListfromSnapshot(QuerySnapshot snapshot) {
     return snapshot.docs.map((doc) {
       return Item(
+        barcode: int.parse(doc.id),
         category: doc.get('category') ?? '',
         name: doc.get('name') ?? '',
         units: doc.get('units') ?? 0,

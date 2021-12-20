@@ -1,4 +1,6 @@
 import 'package:cheapest_item_calculator/models/item.dart';
+import 'package:cheapest_item_calculator/screens/home/item_display.dart';
+import 'package:cheapest_item_calculator/services/database.dart';
 import 'package:flutter/material.dart';
 
 class ItemTile extends StatelessWidget {
@@ -16,6 +18,13 @@ class ItemTile extends StatelessWidget {
         child: ListTile(
           title: Text(item.name),
           subtitle: Text('R $priceValue / ${item.uom}'),
+          trailing: IconButton(
+            icon: Icon(Icons.clear),
+            onPressed: () {
+              DatabaseService().deleteDocument(item.barcode.toString());
+              ItemDisplay();
+            },
+          ),
         ),
       ),
     );
