@@ -18,7 +18,7 @@ class ItemResult extends StatelessWidget {
         color: Colors.green,
         child: ListTile(
           title: Text('Cheapest Item:'),
-          subtitle: Text('${cheapestItem.name}\nR ${cheapestItem.priceperuom} / ${cheapestItem.uom}'),
+          subtitle: Text('${cheapestItem.name}\nR ${cheapestItem.price}'),
         ),
       ),
     );

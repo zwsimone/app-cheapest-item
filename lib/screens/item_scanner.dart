@@ -92,11 +92,11 @@ class _ItemScannerState extends State<ItemScanner> {
 
   void getItemFromBarcode() async {
     String barcode = await decodeBarcode();
-    bool itemPresent = await DatabaseService().checkDocument(barcode);
+    bool itemPresent = await DatabaseService(barcode).checkDocument();
     Item returnItem;
     if (itemPresent) {
       print('Item is present in the database');
-      returnItem = await DatabaseService().getDocument(barcode);
+      returnItem = await DatabaseService(barcode).getDocument();
     } else {
       print('Item is NOT present in the database');
       returnItem = Item(barcode: int.parse(barcode), category: "", name: "", units: 0, uom: "", price: 0, priceperuom: 0);

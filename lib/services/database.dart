@@ -47,11 +47,11 @@ class DatabaseService {
     });
   }
 
-  Future deleteDocument(String id) async {
-    return FirebaseFirestore.instance.collection("dashboard").doc(id).delete();
+  Future deleteDocument() async {
+    return dashboardCollection.doc(id).delete();
   }
 
-  Future<bool> checkDocument(String id) async {
+  Future<bool> checkDocument() async {
     bool present = false;
 
     List<Item> items = _itemListfromSnapshot(await itemsCollection.get());
@@ -65,9 +65,9 @@ class DatabaseService {
     return present;
   }
 
-  Future<Item> getDocument(String id) async {
+  Future<Item> getDocument() async {
     Item emptyItem = Item(
-        barcode: int.parse(id),
+        barcode: int.parse(id!),
         category: "",
         name: "",
         units: 0,
